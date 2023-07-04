@@ -1,0 +1,43 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: echoserver
+  labels:
+    app: echoserver
+    service: echoserver
+spec:
+  type: ClusterIP
+  ports:
+  - name: echo-port
+    port: 80
+    targetPort: 8080
+  selector:
+    app: echoserver
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echoserver
+  template:
+    metadata:
+      labels:
+        app: echoserver
+    spec:
+      containers:
+      - name: echoserver
+        image: k8s.gcr.io/echoserver:1.5
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8080
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+
+

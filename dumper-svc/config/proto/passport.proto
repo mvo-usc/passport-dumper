@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package passport;
+
+option go_package = "github.com/urbansportsclub/passport-svc/pkg/passport;passport";
+option php_namespace = "USC\\Passport";
+option php_metadata_namespace = "USC\\Passport\\Metadata";
+
+message Passport {
+    Header header = 1;
+    UserInfo user_info = 2;
+    DeviceInfo device_info = 3;
+    Integrity user_integrity = 4;
+    Integrity device_integrity = 5;    
+    int64 created = 6;
+    int64 expires = 7;
+    Source source = 8;
+    PassportAuthenticationLevel authentication_level = 9;
+}
+
+message UserInfo {
+    bytes account_id = 1;
+    string locale = 2;
+    repeated string roles = 3;
+    repeated UserAction actions = 4;
+}
+
+message DeviceInfo {
+    string ip = 1;
+    string os = 2;
+    string platform = 3;
+    string browser = 4;
+    string engine = 5;
+    bool is_bot = 6;
+    string locale = 7;
+}
+
+enum Source {
+    NONE = 0;
+    COOKIE = 1;
+    COOKIE_INSECURE = 2;
+    JWT = 3;
+    PARTNER_TOKEN = 4;
+}
+
+enum PassportAuthenticationLevel {
+    LOW = 0; // untrusted transport
+    HIGH = 1; // secure tokens over TLS
+    HIGHEST = 2; // MSL or user credentials
+}
+
+message Integrity {
+    int32 version = 1;
+    string key_name = 2;
+    bytes hmac = 3;
+}
+
+message Header {
+   string originator = 1; 
+}
+
+message UserAction {
+    string name = 1;
+}
+
+message DeviceAction {
+    string name = 1;
+}

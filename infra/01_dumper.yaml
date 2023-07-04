@@ -1,0 +1,43 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dumper-svc
+  labels:
+    app: dumper-svc
+    service: dumper-svc
+spec:
+  type: ClusterIP
+  ports:
+  - name: echo-port
+    port: 80
+    targetPort: 8888
+  selector:
+    app: dumper-svc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dumper-svc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dumper-svc
+  template:
+    metadata:
+      labels:
+        app: dumper-svc
+    spec:
+      containers:
+      - name: dumper-svc
+        image: dumper-svc
+        imagePullPolicy: Never
+        ports:
+          - containerPort: 8888
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+
+

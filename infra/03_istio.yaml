@@ -1,0 +1,33 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: echo-istio-gateway
+  namespace: istio-system
+spec:
+  selector:
+    app: istio-ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "dumper.info"    
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: echo-service-ingress
+spec:
+  hosts: 
+  - '*'
+  gateways:
+  - istio-system/echo-istio-gateway
+  http:
+  - route:
+    - destination:
+        #host: echoserver
+        host: dumper-svc
+        port:
+            number: 80

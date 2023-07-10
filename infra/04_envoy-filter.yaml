@@ -62,3 +62,4 @@ spec:
                   socket_address:
                     address: extprocfilter-passport-svc.eas.svc.cluster.local
                     port_value: 8081
+

@@ -39,5 +39,21 @@ spec:
           limits:
             cpu: 100m
             memory: 128Mi
-
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: virtual-service-ingress
+spec:
+  gateways:
+  - istio-system/ingress
+  hosts: 
+  - dumper.local
+  http:
+  - route:
+    - destination:
+        #host: echoserver
+        host: dumper-svc
+        # port:
+        #     number: 80
 
